@@ -125,7 +125,7 @@ def start_auto_face_lift_424(scr_image, intensity):
 
 
 if __name__ == '__main__':
-    img = cv.imread("test_image/one_face.jpg")
+    img = cv.imread("one_face.jpg")
     result = start_auto_face_lift_424(img, -50)
     plt.subplot(121), plt.imshow(img[:, :, [2, 1, 0]]), plt.title('input')
     plt.subplot(122), plt.imshow(result[:, :, [2, 1, 0]]), plt.title('output')
