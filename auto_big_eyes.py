@@ -8,6 +8,7 @@ from face_detect import face_detect_424
 '''
 函数：LE
 参数：
+<<<<<<< HEAD
 center：单眼中心位置
 radius：大眼区域半径
 intensity：大眼程度
@@ -15,11 +16,24 @@ map_x：存储映射后对应原图的x坐标
 map_y：存储映射后对应原图的y坐标
 height：原图像的高
 width：原图像的宽
+=======
+scr_image：原始彩图
+image：原始灰度图像
+center：单眼中心位置
+radius：大眼区域半径
+intensity：大眼程度
+>>>>>>> 3eb85d509c3ae985826701308b81c0e535836380
 功能：实现”液化-膨胀“算法
 '''
 
 
+<<<<<<< HEAD
 def LE_424(center, radius, intensity, map_x, map_y, height, width):
+=======
+def LE_424(scr_image, image, center, radius, intensity):
+    # 图像大小
+    height, width = image.shape
+>>>>>>> 3eb85d509c3ae985826701308b81c0e535836380
     # 计算大眼区域
     x = clip(center[0] - radius, 0, width - 1)
     y = clip(center[1] - radius, 0, height - 1)
@@ -28,6 +42,12 @@ def LE_424(center, radius, intensity, map_x, map_y, height, width):
     # 计算大眼区域半径的平方
     D = pow(radius, 2)
     k0 = intensity / 100.0
+<<<<<<< HEAD
+=======
+    # 初始化映射后(x, y)对应原图的列、行坐标矩阵
+    map_x = np.array([[i for i in range(width)] for j in range(height)], dtype=np.float32)
+    map_y = np.array([[j for i in range(width)] for j in range(height)], dtype=np.float32)
+>>>>>>> 3eb85d509c3ae985826701308b81c0e535836380
     # 遍历大眼区域的每个像素
     for j in range(int(y), int(h)):
         for i in range(int(x), int(w)):
@@ -42,7 +62,19 @@ def LE_424(center, radius, intensity, map_x, map_y, height, width):
                 py = clip((j - center[1]) * k + center[1], 0, height - 1)
                 map_x[j, i] = px
                 map_y[j, i] = py
+<<<<<<< HEAD
     return map_x, map_y
+=======
+    # 通道拆分
+    blue, green, red = cv.split(scr_image)
+    # 分别计算，使用双线性插值
+    big_image_b = cv.remap(blue, map_x, map_y, interpolation=cv.INTER_LINEAR)
+    big_image_g = cv.remap(green, map_x, map_y, interpolation=cv.INTER_LINEAR)
+    big_image_r = cv.remap(red, map_x, map_y, interpolation=cv.INTER_LINEAR)
+    # 通道合成
+    big_image = cv.merge([big_image_b, big_image_g, big_image_r])
+    return big_image
+>>>>>>> 3eb85d509c3ae985826701308b81c0e535836380
 
 
 '''
@@ -58,11 +90,14 @@ intensity：大眼程度
 
 
 def auto_big_eyes_424(scr_image, image, faces, all_face_points, intensity):
+<<<<<<< HEAD
     # 图像大小
     height, width = image.shape
     # 初始化映射后(x, y)对应原图的列、行坐标矩阵
     map_x = np.array([[i for i in range(width)] for j in range(height)], dtype=np.float32)
     map_y = np.array([[j for i in range(width)] for j in range(height)], dtype=np.float32)
+=======
+>>>>>>> 3eb85d509c3ae985826701308b81c0e535836380
     # 遍历所有人脸
     for people in range(len(faces)):
         # 获得一张人脸框位置
@@ -89,6 +124,7 @@ def auto_big_eyes_424(scr_image, image, faces, all_face_points, intensity):
         else:
             radius = dis_right
         # 处理左眼
+<<<<<<< HEAD
         map_x, map_y = LE_424(cen_left, radius, intensity, map_x, map_y, height, width)
         # 处理右眼
         map_x, map_y = LE_424(cen_right, radius, intensity, map_x, map_y, height, width)
@@ -101,6 +137,14 @@ def auto_big_eyes_424(scr_image, image, faces, all_face_points, intensity):
     # 通道合成
     big_image = cv.merge([big_image_b, big_image_g, big_image_r])
     return big_image
+=======
+        scr_image = LE_424(scr_image, image, cen_left, radius, intensity)
+        image = cv.cvtColor(scr_image, cv.COLOR_BGR2GRAY)
+        # 处理右眼
+        scr_image = LE_424(scr_image, image, cen_right, radius, intensity)
+        image = cv.cvtColor(scr_image, cv.COLOR_BGR2GRAY)
+    return scr_image
+>>>>>>> 3eb85d509c3ae985826701308b81c0e535836380
 
 
 '''
@@ -122,7 +166,11 @@ def start_auto_big_eyes_424(scr_image, intensity):
 
 if __name__ == '__main__':
     img = cv.imread("tow_face.jpg")
+<<<<<<< HEAD
     result = start_auto_big_eyes_424(img, 50)
+=======
+    result = start_auto_big_eyes_424(img, 10)
+>>>>>>> 3eb85d509c3ae985826701308b81c0e535836380
     plt.subplot(121), plt.imshow(img[:, :, [2, 1, 0]]), plt.title('input')
     plt.subplot(122), plt.imshow(result[:, :, [2, 1, 0]]), plt.title('output')
     plt.show()
