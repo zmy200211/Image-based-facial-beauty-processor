@@ -26,17 +26,10 @@ class buffing403:
         gamma = 0
         # dst = img*beta + blur*alpha + gamma
         img_add = cv2.addWeighted(img, beta, blur, alpha, gamma)
-<<<<<<< HEAD
         cv2.imwrite('temp/temp.jpg', img_add)
 
         # 图像锐化
         img_add = Image.open('temp/temp.jpg')
-=======
-        cv2.imwrite('imgAdd/img_add.jpg', img_add)
-
-        # 图像锐化
-        img_add = Image.open('imgAdd/img_add.jpg')
->>>>>>> 3eb85d509c3ae985826701308b81c0e535836380
         # 增强锐度
         sharper = ImageEnhance.Sharpness(img_add)
         sharpness = 1.5

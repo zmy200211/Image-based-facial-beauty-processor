@@ -1,9 +1,6 @@
 import cv2
 from matplotlib import pyplot as plt
-<<<<<<< HEAD
 
-=======
->>>>>>> 3eb85d509c3ae985826701308b81c0e535836380
 from image_overlay import *
 from face_detect import *
 
@@ -24,10 +21,7 @@ def make_base_424(src_image, msk_image, input_points, transformation_points, rat
     A = cv2.getAffineTransform(input_points, transformation_points)
     # 将腮红图像进行仿射变换，使用双线性插值
     png = cv2.warpAffine(msk_image, A, (src_image.shape[1], src_image.shape[0]), flags=cv2.INTER_LINEAR)
-<<<<<<< HEAD
     cv2.imwrite("aaa.png", png)
-=======
->>>>>>> 3eb85d509c3ae985826701308b81c0e535836380
     # 将原图与腮红叠加
     src_image = add_alpha_channel_424(src_image)
     src_image = merge_jpg_and_png_424(src_image, png, ration)
